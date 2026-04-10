@@ -1,0 +1,870 @@
+{
+  "name": "SafeQuipp Bot",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        576
+      ],
+      "id": "7274a748-335a-4a07-bac9-cbd9d7aee2df",
+      "name": "Telegram Trigger",
+      "webhookId": "a9938cc5-276e-4a58-82a5-84c4a60147ef",
+      "credentials": {
+        "telegramApi": {
+          "id": "ob50YQJSWTe4Z6y8",
+          "name": "Telegram account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "=Hi! Welcome to SafeQuip. How can we assist you today?  \n🔹 General Inquiry \n🔹 Service Booking",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1264,
+        416
+      ],
+      "id": "8f52e0c0-1edf-49a4-a1da-10507dfc976f",
+      "name": "Send a text message",
+      "webhookId": "4184a928-5b00-41a7-a6cd-f990fca8f8d4",
+      "credentials": {
+        "telegramApi": {
+          "id": "ob50YQJSWTe4Z6y8",
+          "name": "Telegram account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1sIKoFpOKrjqZSfxi7H2n1lAdlM77AwKNl45O70t7vQc",
+          "mode": "list",
+          "cachedResultName": "SafeQuip Bot",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1sIKoFpOKrjqZSfxi7H2n1lAdlM77AwKNl45O70t7vQc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1sIKoFpOKrjqZSfxi7H2n1lAdlM77AwKNl45O70t7vQc/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "client_id": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+            "status": "new"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "client_id",
+              "displayName": "client_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        928,
+        416
+      ],
+      "id": "eb80a498-57d4-4025-8d15-f633752df4b2",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "tgvyD5FemaPsTCES",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1sIKoFpOKrjqZSfxi7H2n1lAdlM77AwKNl45O70t7vQc",
+          "mode": "list",
+          "cachedResultName": "SafeQuip Bot",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1sIKoFpOKrjqZSfxi7H2n1lAdlM77AwKNl45O70t7vQc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1sIKoFpOKrjqZSfxi7H2n1lAdlM77AwKNl45O70t7vQc/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "client_id",
+              "lookupValue": "={{ $json.message.chat.id }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        288,
+        576
+      ],
+      "id": "57819127-c9a7-425b-acd8-569411be398b",
+      "name": "Get row(s) in sheet",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "tgvyD5FemaPsTCES",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "50622b11-883f-401f-930e-a51e894a7dd7",
+              "leftValue": "={{ $json.client_id }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "notExists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        576,
+        576
+      ],
+      "id": "1923e6a8-1d74-4b44-ade2-1ce371bc9efe",
+      "name": "User does not exist"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Telegram Trigger').item.json.message.text }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "Update your Intent Classification node's system message to the following:\n\n    Role: SafeQuip Dynamic Intent Classifier.\n    Intents:\n\n        \"General Inquiry\": Use if the user asks for technical specs, SABS/SANS info, product descriptions, or pricing.\n\n        \"Service Booking\": Use if the user expresses a desire to schedule maintenance, request a technician, or book an inspection.\n\n    Rules for State Switching:\n\n        If the user is currently asking a question but mentions \"booking\" or \"scheduling,\" you MUST prioritize the \"Service Booking\" intent.\n\n        Output category name ONLY (e.g., General Inquiry or Service Booking).\n\n        If the user's input is a greeting or too vague to classify, output exactly: {\"intent\": \"null\", \"message\": \"I'm ready to help! Would you like to ask a technical question about our equipment, or are you looking to book a service for your branch?\"}\n\n        No markdown. No intro. No explanation."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        864,
+        720
+      ],
+      "id": "ab3858a2-5b5d-440b-9875-9121192f15f0",
+      "name": "Intent Classification"
+    },
+    {
+      "parameters": {
+        "model": "openai/gpt-oss-120b",
+        "options": {
+          "temperature": 0
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        800,
+        944
+      ],
+      "id": "96b43d73-fa4c-44ba-86eb-0ed24048558f",
+      "name": "Groq Chat Model",
+      "credentials": {
+        "groqApi": {
+          "id": "OXOV4gpFHSpNDkgY",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n\t\"intent\": \"null\",\n\t\"message\": \"I'm sorry, I didn't quite catch that. Could you please let me know if you have a general question about our products or if you would like to book a service for your equipment?\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        1056,
+        944
+      ],
+      "id": "c4ff3c62-5795-4a51-afa9-796bde726788",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.output.intent }}",
+                    "rightValue": "General Inquiry",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "0fecb4d4-b161-4f21-910f-28d4673107cc"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "General Inquiry"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "931ccd85-ab1a-4398-9d4d-41231492da59",
+                    "leftValue": "={{ $json.output.intent }}",
+                    "rightValue": "Service Booking",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Service Booking"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "da841426-c8d0-415d-859e-3ed05da0a162",
+                    "leftValue": "={{ $json.output.intent }}",
+                    "rightValue": "={{ $json.output.intent }}",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "null"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        1264,
+        704
+      ],
+      "id": "f03d6c27-6830-41f5-8a76-3b361940471a",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "={{ $json.output.message }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1696,
+        912
+      ],
+      "id": "c62577a9-fac2-4d62-bc21-8ea591e2246f",
+      "name": "Repeat",
+      "webhookId": "4184a928-5b00-41a7-a6cd-f990fca8f8d4",
+      "credentials": {
+        "telegramApi": {
+          "id": "ob50YQJSWTe4Z6y8",
+          "name": "Telegram account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Telegram Trigger').item.json.message.text }}",
+        "options": {
+          "systemMessage": "### ROLE\nYou are the SafeQuip Technical Assistant. You provide high-speed, accurate product information.\n\n### RESPONSE RULES\n1. **Direct Start:** No \"Based on the documents...\" or \"Hello! I can help with that.\" Start with the answer immediately.\n2. **Bullet Points Only:** Use bullet points for technical specs or features. \n3. **Strict Brevity:** Maximum 3 sentences per response. If more detail is needed, ask: \"Would you like the full technical data sheet?\"\n4. **The \"I Don't Know\" Rule:** If context is missing, say: \"Data not found in guide. Connect with a rep?\"\n\n5. **Conversational Intent:** If the user is greeting you or stating they have a question (without asking the specific question yet), do not trigger Rule 4. Instead, respond: \"I'm ready. Please tell me which product or service you need information on.\"\n\n### EXAMPLE STYLE\n**User:** What is the 9kg DCP extinguisher used for?\n**Bot:** Suitable for Class A, B, and C fires.\n• High-pressure discharge for rapid flame suppression.\n• Ideal for industrial, marine, and vehicle safety.\nWould you like maintenance specs for this unit?"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        1552,
+        304
+      ],
+      "id": "45a46e79-792f-411d-a9c6-c6a00ad334d8",
+      "name": "General Question"
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "1nCcCITjRCXp5CUgSXdlmUnpod9QTzCvk",
+          "mode": "list",
+          "cachedResultName": "SAFEQUIP-Product-Guide-11-2023-website.pdf",
+          "cachedResultUrl": "https://drive.google.com/file/d/1nCcCITjRCXp5CUgSXdlmUnpod9QTzCvk/view?usp=drivesdk"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        0,
+        864
+      ],
+      "id": "1f755261-ec33-4295-adea-e63c8dbe5cd2",
+      "name": "Download file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "d5fqbUWvsPN4csyP",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "tableName": {
+          "__rl": true,
+          "value": "safequip_documents",
+          "mode": "list",
+          "cachedResultName": "safequip_documents"
+        },
+        "options": {
+          "queryName": "match_safequip_documents"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1.3,
+      "position": [
+        224,
+        864
+      ],
+      "id": "bc31b926-5d6d-4d3f-8e4b-8f8f6dc5e9b9",
+      "name": "Supabase Vector Store",
+      "credentials": {
+        "supabaseApi": {
+          "id": "Bxc7t1TK3ySZX90T",
+          "name": "SafeQuip"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "dataType": "binary",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1.1,
+      "position": [
+        304,
+        1088
+      ],
+      "id": "3a5fd8a5-9cbd-42c6-bddf-81e48a0852bb",
+      "name": "Default Data Loader"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-embedding-001"
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        1824,
+        736
+      ],
+      "id": "97a143ca-052f-4b67-badf-e136aeae9fdd",
+      "name": "Embeddings Google Gemini",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "8Iwej8495JWT8oc9",
+          "name": "PLURON api"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolDescription": "Call this tool to look information about safequipp",
+        "tableName": {
+          "__rl": true,
+          "value": "safequip_documents",
+          "mode": "list",
+          "cachedResultName": "safequip_documents"
+        },
+        "options": {
+          "queryName": "match_safequip"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1.3,
+      "position": [
+        1744,
+        528
+      ],
+      "id": "f7f72531-93ec-4f6d-9f32-e1762b39d354",
+      "name": "Supabase Vector Store1",
+      "credentials": {
+        "supabaseApi": {
+          "id": "Bxc7t1TK3ySZX90T",
+          "name": "SafeQuip"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "={{ $json.output }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        2112,
+        512
+      ],
+      "id": "b775ae71-88ca-4e2d-9106-6ec325c61a2b",
+      "name": "Send a text message1",
+      "webhookId": "a0a447f3-8461-4de4-900c-02f9920911f9",
+      "credentials": {
+        "telegramApi": {
+          "id": "ob50YQJSWTe4Z6y8",
+          "name": "Telegram account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Telegram Trigger').item.json.message.chat.id }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        1616,
+        528
+      ],
+      "id": "105f9063-569b-458a-bc49-d6189564c40d",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Telegram Trigger').item.json.message.chat.id }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        928,
+        944
+      ],
+      "id": "3f8081f2-dd66-433d-a922-99dfa3fc0410",
+      "name": "Simple Memory1"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-flash-lite-latest",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        1488,
+        528
+      ],
+      "id": "0b060ccd-f6f2-46bf-ba78-431343d47bae",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "8Iwej8495JWT8oc9",
+          "name": "PLURON api"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "📍 START HERE\nConnect your Telegram/WhatsApp credentials.\n\nOpen each node with a red warning to add your own API keys."
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -304,
+        528
+      ],
+      "typeVersion": 1,
+      "id": "ccdedaaa-8a07-4432-93a4-d3f77c9cb350",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "📂 DATA INGESTION\n\n    Replace the 'Download File' ID with your own PDF ID.\n\n    Update the Supabase node with your Table Name.\n\n    Check the GitHub README for the required SQL function script!",
+        "height": 224
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        16,
+        1024
+      ],
+      "typeVersion": 1,
+      "id": "1ec643e3-2669-4107-a988-da64608685d1",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "📊 CRM SETUP\n\n    Open this node and select your own Google Sheet.\n\n    Map the 'Name' and 'Inquiry' fields to your sheet columns to start capturing leads.",
+        "height": 176,
+        "width": 304
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        224,
+        416
+      ],
+      "typeVersion": 1,
+      "id": "90ae2a18-3af4-4d0e-af6f-d5cb66b85267",
+      "name": "Sticky Note2"
+    }
+  ],
+  "pinData": {
+    "Download file": [
+      {
+        "json": {},
+        "binary": {
+          "data": {
+            "mimeType": "application/pdf",
+            "fileType": "pdf",
+            "fileExtension": "pdf",
+            "data": "filesystem-v2",
+            "fileName": "SAFEQUIP-Product-Guide-11-2023-website.pdf",
+            "id": "filesystem-v2:workflows/cZ4dWlEHAyONbNqx/executions/534/binary_data/975d4b26-44ea-434c-9eff-f582cab3dc0c",
+            "fileSize": "43.1 MB",
+            "bytes": 43092569
+          }
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ],
+    "Telegram Trigger": [
+      {
+        "json": {
+          "update_id": 975854968,
+          "message": {
+            "message_id": 519,
+            "from": {
+              "id": 7836872279,
+              "is_bot": false,
+              "first_name": "Oscar",
+              "language_code": "en"
+            },
+            "chat": {
+              "id": 7836872279,
+              "first_name": "Oscar",
+              "type": "private"
+            },
+            "date": 1775793652,
+            "text": "How many fire extinguishers do I need"
+          }
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a text message": {
+      "main": [
+        []
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "User does not exist",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "User does not exist": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Intent Classification",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Intent Classification",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Intent Classification",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Intent Classification": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "General Question",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [],
+        [
+          {
+            "node": "Repeat",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download file": {
+      "main": [
+        [
+          {
+            "node": "Supabase Vector Store",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "Supabase Vector Store",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings Google Gemini": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Supabase Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          },
+          {
+            "node": "Supabase Vector Store1",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase Vector Store1": {
+      "ai_tool": [
+        [
+          {
+            "node": "General Question",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "General Question": {
+      "main": [
+        [
+          {
+            "node": "Send a text message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "General Question",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory1": {
+      "ai_memory": [
+        [
+          {
+            "node": "Intent Classification",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "General Question",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "04fb513c-554b-4254-b979-31b567a5eac9",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "c1f526f4cebac3d6dc82be02ab35d559de8c2aa3d6684f1c9d407e8602a4ead0"
+  },
+  "id": "cZ4dWlEHAyONbNqx",
+  "tags": []
+}
