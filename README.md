@@ -20,7 +20,7 @@ To use this template, you will need:
 3. **Important:** You must manually configure each node with your own Credentials and Data IDs.
 
 
-## 📺 Tutorial
+## Youtube Tutorial
 [In the process]
 
 ---
